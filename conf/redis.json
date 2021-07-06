@@ -1,0 +1,8 @@
+{
+  "addr": "127.0.0.1:6379",
+  "idle": 8,
+  "password": "",
+  "active": 10,
+  "idle_time_out": 300,
+  "db": 0
+}
