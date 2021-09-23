@@ -19,6 +19,7 @@ type JwtClaims struct {
 	UserName string `json:"user_name"`
 	UserAccount string `json:"user_account"`
 	UserRole string `json:"user_account"`
+	UserIP string `json:"user_ip"`
 }
 
 

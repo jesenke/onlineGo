@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package proto;
+
+service Register {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc GetAddr (GetAddrRequest) returns (GetAddrResponse);
+  rpc Deregister (DeregisterRequest) returns (DeregisterResponse);
+}
+
+message RegisterRequest {
+  string serverName  = 1;
+  Server serverInfo  = 2;
+}
+
+message RegisterResponse {
+  int64  code = 1;
+  string  msg = 2;
+}
+
+message GetAddrRequest {
+  string serverName  = 1;
+}
+
+message Server {
+  string serverIp  = 1;
+  string serverPort  = 2;
+  //元数据后面再说
+}
+
+message GetAddrResponse {
+  int64  code = 1;
+  string  msg = 2;
+  repeated Server serverList = 3;
+}
+
+message DeregisterRequest {
+  string serverName  = 1;
+  Server serverInfo  = 2;
+}
+
+message DeregisterResponse {
+  int64  code = 1;
+  string  msg = 2;
+}

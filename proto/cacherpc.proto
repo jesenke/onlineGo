@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package proto;
+
+service Storage {
+   rpc Get (GetRequest) returns (GetResponse);
+   rpc Set (SetRequest) returns (SetResponse);
+   rpc Exist (ExistRequest) returns (ExistResponse);
+   rpc Count (CountRequest) returns (CountResponse);
+   rpc List (CountRequest) returns (CountResponse);
+   rpc TouchMv (TouchMvRequest) returns (TouchMvResponse);
+   rpc ReceiveMv (ReceiveMvRequest) returns (ReceiveMvResponse);
+
+}
+
+message GetRequest {
+  string key = 1;
+  string subKey = 2;
+}
+
+message GetResponse {
+  string code  = 1;
+  string msg  = 2;
+  Item data = 3;
+}
+
+
+message SetRequest {
+     repeated Item item  = 1;
+}
+
+message SetResponse {
+   string code  = 1;
+   string msg  = 2;
+   int64 count  = 3;
+   repeated Item data = 4;
+}
+
+message Item {
+  int64 expire = 1;
+  string key = 2;
+  string subKey = 3;
+  bytes data = 4;
+}
+
+message CountRequest {
+  string key = 1;
+}
+
+message CountResponse {
+  string code  = 1;
+  string msg  = 2;
+  int64 count  = 3;
+}
+
+message ExistRequest {
+  string key = 2;
+  string subKey = 3;
+}
+
+message ExistResponse {
+  int64  Code = 1;
+  string  Msg = 2;
+  string  count = 3;
+}
+
+
+message TouchMvRequest {
+  string hashKey = 1;
+  string targetAddr = 2;
+}
+
+message TouchMvResponse {
+  int64  Code = 1;
+  string  Msg = 2;
+}
+
+message ReceiveMvRequest {
+  bytes data = 1;
+}
+
+message ReceiveMvResponse {
+  int64  Code = 1;
+  string  Msg = 2;
+}

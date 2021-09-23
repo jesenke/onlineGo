@@ -1,0 +1,32 @@
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v3.3.10-dev
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on 127.0.0.1:8000
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v3.3.10-dev
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on 127.0.0.1:8000
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v3.3.10-dev
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on 127.0.0.1:8000
+{"file":"/Users/kezungui/go/src/github.com/onlineGo/cmd/comet/main.go:35","func":"main.main","level":"error","msg":"the api serve listen err:listen tcp: address ::8099: too many colons in address","time":"2021-08-02T10:06:21.009869+08:00"}
+{"file":"/Users/kezungui/go/src/github.com/onlineGo/cmd/comet/main.go:35","func":"main.main","level":"error","msg":"the api serve listen err:listen tcp: address 127.0.0.1::8099: too many colons in address","time":"2021-08-02T10:09:39.645132+08:00"}

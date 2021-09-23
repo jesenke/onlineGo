@@ -1,3 +1,7 @@
 {
-  "jwtTokenSign": "1"
+  "ticket": "1",
+  "callback": "需要用户状态变化通知的接口",
+  "rpc-port": ":8080",
+  "api-port": ":8081",
+  "rgcf-port": ":8082"
 }

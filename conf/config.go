@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	rd "github.com/go-redis/redis"
 	logrus "github.com/sirupsen/logrus"
@@ -9,18 +10,17 @@ import (
 	"time"
 )
 
-
 type redisDns struct {
-	Addr 			string			`json:"addr"`
-	Idle			int				`json:"idle"`
-	Pwd             string          `json:"password"`
-	Active			int				`json:"active"`
-	IdleTimeOut		int				`json:"idle_time_out"`
-	DB				int				`json:"db"`
+	Addr        string `json:"addr"`
+	Idle        int    `json:"idle"`
+	Pwd         string `json:"password"`
+	Active      int    `json:"active"`
+	IdleTimeOut int    `json:"idle_time_out"`
+	DB          int    `json:"db"`
 }
 
 type LogHandle struct {
-	ErrorFile *os.File
+	ErrorFile  *os.File
 	AccessFile *os.File
 }
 
@@ -30,12 +30,11 @@ var redis *rd.Client
 var log LogHandle
 var interConfig interConf
 
-
-
 func Init() {
 	initRedis()
 	initLog()
 	initInter()
+	InitCertFile()
 }
 
 func GetRedis() *rd.Client {
@@ -46,7 +45,7 @@ func GetLog() LogHandle {
 	return log
 }
 
-func initLog()  {
+func initLog() {
 	path, err := os.Getwd()
 	if err != nil {
 		panic("log  init fail")
@@ -67,9 +66,9 @@ func initLog()  {
 }
 
 func initInter() {
-	main, err := loadConfByte("main")
+	main, err := loadConfByte("main.json")
 	if err != nil {
-		panic("main conf get fail")
+		panic("main conf get fail" + err.Error())
 	}
 	err = json.Unmarshal(main, &interConfig)
 	if err != nil {
@@ -77,8 +76,8 @@ func initInter() {
 	}
 }
 
-func initRedis()  {
-	redisConf, err := loadConfByte("redis")
+func initRedis() {
+	redisConf, err := loadConfByte("redis.json")
 	if err != nil {
 		panic("redis conf get fail")
 	}
@@ -109,21 +108,37 @@ func initRedis()  {
 	redis = rd.NewClient(&option)
 }
 
-func loadConfByte( fileName string ) (str []byte , err error) {
-	path := os.Getenv("CONFIG_PATH")
-	if len(path) == 0 {
-		path, err = os.Getwd()
-		if err != nil {
-			return nil, err
-		}
-		path = path + "/conf"
-	}
+func loadConfByte(fileName string) (str []byte, err error) {
 
-	str, err = ioutil.ReadFile(path  + "/" + fileName + ".json")
+	path, err := os.Getwd()
+	if err != nil {
+		logrus.WithError(err).Info(fileName)
+		return nil, err
+	}
+	path = path + "/conf"
+
+	str, err = ioutil.ReadFile(path + "/" + fileName)
 	return
 }
 
-func GetConfig(key string) string  {
+func InitCertFile() map[string]string {
+
+	path, err := os.Getwd()
+	if err != nil {
+		return nil
+	}
+	path = path + "/conf"
+	ServerPem := path + "/default.pem"
+	ServerKey := path + "/default.key"
+	if _, err = tls.LoadX509KeyPair(ServerPem, ServerKey); err != nil {
+		panic("cert file check fail" + err.Error())
+	}
+	interConfig["ServerKey"] = ServerKey
+	interConfig["ServerPem"] = ServerPem
+	return interConfig
+}
+
+func GetConfig(key string) string {
 	value, ok := interConfig[key]
 	if ok {
 		return value
