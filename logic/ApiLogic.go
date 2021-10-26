@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/onlineGo/lib"
 	"github.com/onlineGo/pkg/selector/hash"
 	"github.com/onlineGo/pkg/server"
@@ -15,7 +16,7 @@ func NewApiService() (s ApiLogic) {
 	return s
 }
 
-func (l *ApiLogic) TokenSign(param map[string]string) (responseData server.Response) {
+func (l *ApiLogic) Auth(*gin.Context) {
 	//同一个人重复认证签名时，创建时间不变
 	claim := lib.NewJwt(param)
 	claim.SetExpireAt(3600)

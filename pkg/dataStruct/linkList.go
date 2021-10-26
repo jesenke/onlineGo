@@ -30,6 +30,25 @@ type Node struct {
 	//Above *Node // 上层同节点
 }
 
+func NewList() *Node {
+	List := &Node{}
+	return List
+}
+
+// 返回链表头节点
+func (l *Node) Head() (head *ListNode) {
+	head = l.head
+
+	return
+}
+
+// 返回链表尾节点
+func (l *Node) Tail() (tail *ListNode) {
+	tail = l.tail
+
+	return
+}
+
 func (node *Node) NodeType() int {
 	if node == nil {
 		return UnknownType

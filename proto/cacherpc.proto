@@ -5,42 +5,44 @@ package proto;
 service Storage {
    rpc Get (GetRequest) returns (GetResponse);
    rpc Set (SetRequest) returns (SetResponse);
+   rpc Del (DelRequest) returns (DelResponse);
    rpc Exist (ExistRequest) returns (ExistResponse);
    rpc Count (CountRequest) returns (CountResponse);
-   rpc List (CountRequest) returns (CountResponse);
-   rpc TouchMv (TouchMvRequest) returns (TouchMvResponse);
-   rpc ReceiveMv (ReceiveMvRequest) returns (ReceiveMvResponse);
-
+   rpc List (ListRequest) returns (ListResponse);
+   rpc LogGet (LogGetRequest) returns (LogGetResponse);
 }
 
 message GetRequest {
   string key = 1;
   string subKey = 2;
+  string uniqueId = 3;
 }
 
 message GetResponse {
-  string code  = 1;
-  string msg  = 2;
-  Item data = 3;
+  int64 ok = 1;
+  bytes data = 2;
 }
 
+message DelRequest {
+  string key = 1;
+  string subKey = 2;
+}
+
+message DelResponse {
+  int64 ok = 1;
+  bytes data = 2;
+}
 
 message SetRequest {
-     repeated Item item  = 1;
-}
-
-message SetResponse {
-   string code  = 1;
-   string msg  = 2;
-   int64 count  = 3;
-   repeated Item data = 4;
-}
-
-message Item {
   int64 expire = 1;
   string key = 2;
   string subKey = 3;
   bytes data = 4;
+}
+
+message SetResponse {
+  int64 ok = 1;
+  bytes data = 2;
 }
 
 message CountRequest {
@@ -48,9 +50,8 @@ message CountRequest {
 }
 
 message CountResponse {
-  string code  = 1;
-  string msg  = 2;
-  int64 count  = 3;
+  int64 ok  = 1;
+  bytes data = 2;
 }
 
 message ExistRequest {
@@ -59,19 +60,19 @@ message ExistRequest {
 }
 
 message ExistResponse {
-  int64  Code = 1;
-  string  Msg = 2;
-  string  count = 3;
+  int64 ok = 1;
+  bytes data = 2;
 }
 
-
-message TouchMvRequest {
-  string hashKey = 1;
-  string targetAddr = 2;
+//节点从其他节点同步数据
+message ListRequest {
+  string key = 1; //
+  string subKey = 2; //
 }
 
-message TouchMvResponse {
-  int64  Code = 1;
+message ListResponse {
+  int64 term = 1;      //主节点的任期,若小于
+  bytes data = 2;      //拉取日志内容
   string  Msg = 2;
 }
 

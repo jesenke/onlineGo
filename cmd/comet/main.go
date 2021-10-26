@@ -34,7 +34,6 @@ func main() {
 		logrus.Errorf("the api serve listen err:" + err.Error())
 		panic("the api serve start err:" + err.Error())
 	}
-
 }
 
 func RpcStart() {

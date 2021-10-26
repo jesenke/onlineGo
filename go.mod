@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-oauth2/oauth2/v4 v4.4.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible

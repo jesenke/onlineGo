@@ -76,7 +76,7 @@ func (node *MemoryTree) AddValue(RoomId string, value *RecordStatus) (bool, bool
 	}
 	room, ok := node.Room[RoomId]
 	if !ok {
-		room = new(RoomNode)
+		room = RoomNode{}
 		room.RoomId = RoomId
 		room.Data = make([]*PageChain, 1)
 		skipNode := NewSkipSortList()
@@ -85,13 +85,21 @@ func (node *MemoryTree) AddValue(RoomId string, value *RecordStatus) (bool, bool
 		room.Data[0].PageStartId = value.Id
 		room.Data[0].PageEndId = value.Id
 	}
+
+	var smallKey, count uint64 = 0, 0
 	for _, v := range room.Data {
-		//数据跳表内的,判断是否新增更新过期
+		//数据跳表内的,判断是否新增更新过期,在里面一定可以找到
+
 		if v.PageStartId <= value.Id && v.PageEndId >= value.Id {
 			//当数据达到什么情况,对跳表执行分裂todo
 			return v.Records.CreateOrUpdate(value.Id, value)
 		}
+		//小于就插入一个
+		if v.Records.Length < DataLimit {
+			return v.Records.CreateOrUpdate(value.Id, value)
+		}
 		//其他情形还有很多考虑点。todo
 	}
+
 	return true, true
 }
